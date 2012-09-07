@@ -38,7 +38,11 @@ void *readconf(char *infohead, char *keyword, char *filename)
     end++;
   }
   for (i = i - 1; i >= 0; i--) {
-    printf("keyname: %s\t\tinfo: %s\n", dictlink[i].keyname, dictlink[i].info);
+    if (!strcmp(dictlink[i].keyname, keyword)) {
+      printf("keyname: %s\t\tinfo: %s\n", dictlink[i].keyname, dictlink[i].info);
+      strcpy(infohead, dictlink[i].info);
+      return infohead;
+    }
   }
-	return infohead;
+  return "No info!\n";
 }
