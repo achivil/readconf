@@ -3,7 +3,7 @@
 #include <string.h>
 #include "readconf.h"
 
-void *readconf(char *infohead, char *keyword, char *filename)
+char *readconf(char *infohead, char *keyword, char *filename)
 {
 	FILE *f;
 	char c, *end = infohead;
@@ -32,15 +32,15 @@ void *readconf(char *infohead, char *keyword, char *filename)
       strcpy((char *)&(dictnode->info), infohead);
       dictlink[i] = *dictnode;
       i++;
-      //printf("keyname: %s\t\tinfo: %s\n", dictnode->keyname, dictnode->info);
       continue;
     }
     end++;
   }
   for (i = i - 1; i >= 0; i--) {
     if (!strcmp(dictlink[i].keyname, keyword)) {
-      printf("keyname: %s\t\tinfo: %s\n", dictlink[i].keyname, dictlink[i].info);
+      //printf("keyname: %s\t\tinfo: %s\n", dictlink[i].keyname, dictlink[i].info);
       strcpy(infohead, dictlink[i].info);
+      //printf("now info is %s\n", infohead);
       return infohead;
     }
   }

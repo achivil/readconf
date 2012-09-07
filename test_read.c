@@ -7,8 +7,8 @@ int main(void)
 {
 	char *info;
 	info = malloc(sizeof(char) * 1000);
-	info = readconf(info, "ipv6", "testconf.conf");
-	printf("%s", info);
+	info = readconf(info, "ipv4", "testconf.conf");
+	printf("%s\n", info);
 	return 0;
 }
 
