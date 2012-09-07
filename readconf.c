@@ -3,30 +3,42 @@
 #include <string.h>
 #include "readconf.h"
 
-char *readconf(char *infohead, char *keyword, char *filename)
+void *readconf(char *infohead, char *keyword, char *filename)
 {
 	FILE *f;
 	char c, *end = infohead;
+  infonode *link_head, *new_node;
+  confinfo *dictnode, dictlink[100];
+  int i = 0;
 
+  dictnode = malloc(sizeof(confinfo));
 	f = fopen(filename, "rb");
 	while ((c = fgetc(f)) != EOF) {
 		if (c == '#' || c == '\"') {
 			while ((c = fgetc(f)) != '\n') {
 			}
 			continue;
-		}
-		if (c == '\n')
-			continue;
-		if (c == ':') {
-			*end = '\0';
-			printf("%s", infohead);
-			if (!strcmp(infohead, keyword)) {
-				end = infohead;
-				continue;
-			}
-		}
+		}//jump over the comment
 		*end = c;
-		end++;
-	}
+    if (c == ':') {
+      *end = '\0';
+      end = infohead;
+      strcpy((char *)&(dictnode->keyname), infohead);
+      continue;
+    }
+    if (c == '\n') {
+		  *end = '\0';
+      end = infohead;
+      strcpy((char *)&(dictnode->info), infohead);
+      dictlink[i] = *dictnode;
+      i++;
+      //printf("keyname: %s\t\tinfo: %s\n", dictnode->keyname, dictnode->info);
+      continue;
+    }
+    end++;
+  }
+  for (i = i - 1; i >= 0; i--) {
+    printf("keyname: %s\t\tinfo: %s\n", dictlink[i].keyname, dictlink[i].info);
+  }
 	return infohead;
 }
